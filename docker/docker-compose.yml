@@ -1,0 +1,26 @@
+version: "3"
+services:
+  cpa:
+    image: kramat/cpa-pen-testing-tool
+    env_file:
+      - ../.env
+    environment:
+      CPA_DB_HOST: db
+    depends_on:
+      - db
+    ports:
+      - ${CPA_PORT}:${CPA_PORT}
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${CPA_DB_USER}
+      POSTGRES_PASSWORD: ${CPA_DB_PASSWORD}
+      POSTGRES_DB: ${CAP_DB_NAME}
+    ports:
+      - ${CPA_DB_PORT}:${CPA_DB_PORT}
+    volumes:
+      - postgresql:/var/lib/postgresql/cpa
+      - postgresql_data:/var/lib/postgresql/cpa/data
+volumes:
+  postgresql: {}
+  postgresql_data: {}
