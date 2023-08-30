@@ -1,8 +1,8 @@
 package store
 
 import (
-	"rgb/internal/conf"
-	"rgb/internal/database"
+	"cpa-pen-testing-tool/internal/conf"
+	"cpa-pen-testing-tool/internal/database"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
