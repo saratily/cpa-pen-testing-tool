@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import Layout from './components/Layout/Layout';
 import HomePage from './pages/HomePage';
@@ -9,6 +9,10 @@ import AuthPage from './pages/AuthPage';
 import PostsPage from './pages/PostsPage';
 import { useContext } from 'react';
 import AuthContext from './store/auth-context';
+
+
+import Planning from './pages/PlanningPage';
+import Scanning from './pages/ScanningPage';
 
 function App() {
 /*
@@ -19,7 +23,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <a
+        <a  
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
@@ -57,13 +61,18 @@ function App() {
 
   return (
     <Layout>
+      
       <Routes>
         <Route path="/" exact element={<HomePage/>} />
         {!authContext.loggedIn && (
           <Route path="/auth" element={<AuthPage />} />
         )}
         <Route path="/posts" element=
-          {authContext.loggedIn ? <PostsPage /> : <AuthPage /> } />      
+          {authContext.loggedIn ? <PostsPage /> : <AuthPage /> } />
+
+        <Route path="/planning" element={<Planning />} /> 
+        <Route path="/scanning" element={<Scanning />} /> 
+
 
         <Route path='*' element={<Navigate to='/' />} />
       </Routes>
