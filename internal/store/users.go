@@ -18,7 +18,8 @@ type User struct {
 	Salt           []byte `json:"-"`
 	CreatedAt      time.Time
 	ModifiedAt     time.Time
-	Posts          []*Post `json:"-" pg:"fk:user_id,rel:has-many,on_delete:CASCADE"`
+	Posts          []*Post        `json:"-" pg:"fk:user_id,rel:has-many,on_delete:CASCADE"`
+	Penetrations   []*Penetration `json:"-" pg:"fk:user_id,rel:has-many,on_delete:CASCADE"`
 }
 
 var _ pg.AfterSelectHook = (*User)(nil)
@@ -26,6 +27,9 @@ var _ pg.AfterSelectHook = (*User)(nil)
 func (user *User) AfterSelect(ctx context.Context) error {
 	if user.Posts == nil {
 		user.Posts = []*Post{}
+	}
+	if user.Penetrations == nil {
+		user.Penetrations = []*Penetration{}
 	}
 	return nil
 }

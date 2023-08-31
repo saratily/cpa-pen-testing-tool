@@ -24,3 +24,12 @@ func addTestPost(user *User) (*Post, error) {
 	err := AddPost(user, post)
 	return post, err
 }
+
+func addTestPenetration(user *User) (*Penetration, error) {
+	penetration := &Penetration{
+		Title:   "Gotham cronicles",
+		Website: "www.exxample.ocm",
+	}
+	err := AddPenetration(user, penetration)
+	return penetration, err
+}

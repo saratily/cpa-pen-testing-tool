@@ -69,6 +69,30 @@ func addTestPost2(user *store.User) *store.Post {
 	return post
 }
 
+func addTestPenetration(user *store.User) *store.Penetration {
+	penetration := &store.Penetration{
+		Title:   "Gotham cronicles",
+		Website: "www.example.ocm",
+	}
+	err := store.AddPenetration(user, penetration)
+	if err != nil {
+		log.Panic().Err(err).Msg("Error adding test post.")
+	}
+	return penetration
+}
+
+func addTestPenetration2(user *store.User) *store.Penetration {
+	penetration := &store.Penetration{
+		Title:   "Justice league meeting",
+		Website: "www.abc.com",
+	}
+	err := store.AddPenetration(user, penetration)
+	if err != nil {
+		log.Panic().Err(err).Msg("Error adding test post.")
+	}
+	return penetration
+}
+
 func userJSON(user store.User) string {
 	body, err := json.Marshal(map[string]interface{}{
 		"Username": user.Username,
@@ -85,6 +109,18 @@ func postJSON(post store.Post) string {
 		"ID":      post.ID,
 		"Title":   post.Title,
 		"Content": post.Content,
+	})
+	if err != nil {
+		log.Panic().Err(err).Msg("Error marshalling JSON body.")
+	}
+	return string(body)
+}
+
+func penetrationJSON(penetration store.Penetration) string {
+	body, err := json.Marshal(map[string]interface{}{
+		"ID":      penetration.ID,
+		"Title":   penetration.Title,
+		"Website": penetration.Website,
 	})
 	if err != nil {
 		log.Panic().Err(err).Msg("Error marshalling JSON body.")

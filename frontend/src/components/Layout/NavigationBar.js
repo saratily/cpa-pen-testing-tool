@@ -32,6 +32,16 @@ const NavigationBar = () => {
                 <Link className="nav-link" to="/posts">My posts</Link>
               </li>
             )}
+            {loggedIn && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/penetrations">Penetration Test</Link>
+              </li>
+            )}
+            {loggedIn && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/reports">Reports</Link>
+              </li>
+            )}
           </ul>
         </div>
         <div className="d-flex flex-row justify-content-end">
