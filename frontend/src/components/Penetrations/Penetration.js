@@ -1,4 +1,5 @@
 import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import AuthContext from '../../store/auth-context';
 import Errors from '../Errors/Errors';
@@ -14,6 +15,13 @@ const Penetration = (props) => {
     setEditing((prevState) => !prevState);
     setErrors({});
   };
+
+  const navigate = useNavigate();
+
+  const runScanHandler = () => {
+    navigate('/planning');
+  };
+
 
   async function deleteHandler() {
     try {
@@ -51,16 +59,19 @@ const Penetration = (props) => {
 
   const cardTitle = editing ? 'Edit penetration' : props.penetration.Title;
   const cardBody = editing ? <PenetrationForm penetration={props.penetration} onEditPenetration={editPenetrationHandler} editing={true}/> : props.penetration.Website;
+  const cardScanning = props.penetration
   const switchModeButtonText = editing ? 'Cancel' : 'Edit';
+  const runScanButtonText = 'Run Scan';
   const cardButtons = editing ?
     <div className="container">
-      <button type="button" className="btn btn-link" onClick={switchModeHandler}>{switchModeButtonText}</button>
       <button type="button" className="btn btn-danger float-right mx-3" onClick={deleteHandler}>Delete</button>
+      <button type="button" className="btn btn-success float-right mx-3" onClick={switchModeHandler}>{switchModeButtonText}</button>
     </div>
     :
     <div className="container">
-      <button type="button" className="btn btn-link" onClick={switchModeHandler}>{switchModeButtonText}</button>
       <button type="button" className="btn btn-danger float-right mx-3" onClick={deleteHandler}>Delete</button>
+      <button type="button" className="btn btn-success float-right mx-3" onClick={runScanHandler}>{runScanButtonText}</button>
+      <button type="button" className="btn btn-success float-right mx-3" onClick={switchModeHandler}>{switchModeButtonText}</button>
     </div>
   const errorWebsite = Object.keys(errors).length === 0 ? null : Errors(errors);
 
