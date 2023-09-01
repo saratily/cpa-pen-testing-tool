@@ -6,7 +6,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 function MySideNav() {
     const navigate = useNavigate();
     const location = useLocation();
-    const uuid = obj => obj.uuid === location.pathname.split("/")[2];
+    const uuid = location.pathname.split("/")[2];
+
     return (
         <SideNav className='mysidenav'
             onSelect={(selected) => {
@@ -30,7 +31,7 @@ function MySideNav() {
                     <NavItem eventKey="netwrok-scanning">
                         <NavText>Network Scanninng</NavText>
                     </NavItem>
-                    <NavItem eventKwy="web-app-enumeration">
+                    <NavItem eventKey="web-app-enumeration">
                         <NavText>Web App Enumeration</NavText>
                     </NavItem>
                     <NavItem eventKey="dns-enumeration">
@@ -43,11 +44,11 @@ function MySideNav() {
                     </NavIcon>
                     <NavText>2. Scanninng</NavText>
                 </NavItem>
-                <NavItem eventKey="expolitation">
+                <NavItem eventKey="exploitation">
                     <NavIcon>
                         <i className='fa-solid fa-explosion' style={{ fontSize: "1.5em" }} />
                     </NavIcon>
-                    <NavText>3. Edxploitation</NavText>
+                    <NavText>3. Exploitation</NavText>
                 </NavItem>
                 <NavItem eventKey="post-exploitation">
                     <NavIcon>

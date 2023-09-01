@@ -13,10 +13,13 @@ import AuthPage from './pages/AuthPage';
 import PostsPage from './pages/PostsPage';
 import PenetrationsPage from './pages/PenetrationsPage';
 
-
-
 import Planning from './pages/PlanningPage';
+import Reconnaissance from './pages/ReconnaissancePage';
 import Scanning from './pages/ScanningPage';
+import Exploitation from './pages/ExploitationPage';
+import PostExploitation from './pages/PostExploitationPage';
+import Reporting from './pages/ReportingPage';
+
 
 function App() {
 
@@ -35,7 +38,12 @@ function App() {
           {authContext.loggedIn ? <PenetrationsPage /> : <AuthPage /> } />
 
         <Route path="/planning/:uuid" element={authContext.loggedIn ? <Planning /> : <AuthPage /> } />
-        <Route path="/scanning" element={<Scanning />} /> 
+        <Route path="/reconnaissance/:uuid" element={authContext.loggedIn ? <Reconnaissance /> : <AuthPage /> } />
+        <Route path="/scanning/:uuid" element={authContext.loggedIn ? <Scanning /> : <AuthPage /> } />
+        <Route path="/exploitation/:uuid" element={authContext.loggedIn ? <Exploitation /> : <AuthPage /> } />
+        <Route path="/post-exploitation/:uuid" element={authContext.loggedIn ? <PostExploitation /> : <AuthPage /> } />
+        <Route path="/reporting/:uuid" element={authContext.loggedIn ? <Reporting /> : <AuthPage /> } />
+
 
 
         <Route path='*' element={<Navigate to='/' />} />

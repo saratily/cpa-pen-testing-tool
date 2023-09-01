@@ -1,4 +1,4 @@
-import { useContext, useEffect, useCallback } from "react";
+import { useContext, useCallback } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import AuthContext from "../store/auth-context";
@@ -10,33 +10,26 @@ const PlanningPage = () => {
   const location = useLocation();
 
   const fetchHandler = useCallback(async () => {
-  try {
-    const response = await fetch('/api/penetrations',
-      {
-        headers: {
-          'Authorization': 'Bearer ' + authContext.token,
-        },
+    try {
+      const response = await fetch('/api/penetrations',
+        {
+          headers: {
+            'Authorization': 'Bearer ' + authContext.token,
+          },
+        }
+      );
+
+      const data = await response.json();
+      const uuid = obj => obj.uuid === location.pathname.split("/")[2];
+
+      if (!data.data.some(uuid)) {
+        navigate('/penetrations');
       }
-    );
 
-    const data = await response.json();
-
-    const uuid = obj => obj.uuid === location.pathname.split("/")[2];
-
-    if (data.data.some(uuid)) {
-      return <Planning />;
-    }
-    navigate('/penetrations');
-
-  } catch (error) {
-
-  }
-}, [authContext.token]);
-
-useEffect(() => {
+    } catch (error) {}
+  });
   fetchHandler();
-}, [fetchHandler]);
-
+  return <Planning/>;
 };
 
 export default PlanningPage;
