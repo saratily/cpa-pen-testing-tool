@@ -28,7 +28,7 @@ function MySideNav() {
                         <i className='fa-solid fa-binoculars' style={{ fontSize: "1.5em" }} />
                     </NavIcon>
                     <NavText>1. Reconnaissance</NavText>
-                    <NavItem eventKey="netwrok-scanning">
+                    <NavItem eventKey="network-scanning">
                         <NavText>Network Scanninng</NavText>
                     </NavItem>
                     <NavItem eventKey="web-app-enumeration">

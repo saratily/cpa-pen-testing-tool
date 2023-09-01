@@ -14,7 +14,13 @@ import PostsPage from './pages/PostsPage';
 import PenetrationsPage from './pages/PenetrationsPage';
 
 import Planning from './pages/PlanningPage';
+
 import Reconnaissance from './pages/ReconnaissancePage';
+import NetworkScanning from './pages/NetworkScanning';
+import WebAppEnumeration from './pages/WebAppEnumeration';
+import DNSEnumeration from './pages/DNSEnumeration';
+
+
 import Scanning from './pages/ScanningPage';
 import Exploitation from './pages/ExploitationPage';
 import PostExploitation from './pages/PostExploitationPage';
@@ -38,7 +44,12 @@ function App() {
           {authContext.loggedIn ? <PenetrationsPage /> : <AuthPage /> } />
 
         <Route path="/planning/:uuid" element={authContext.loggedIn ? <Planning /> : <AuthPage /> } />
+
         <Route path="/reconnaissance/:uuid" element={authContext.loggedIn ? <Reconnaissance /> : <AuthPage /> } />
+        <Route path="/network-scanning/:uuid" element={authContext.loggedIn ? <NetworkScanning /> : <AuthPage /> } />
+        <Route path="/web-app-enumeration/:uuid" element={authContext.loggedIn ? <WebAppEnumeration /> : <AuthPage /> } />
+        <Route path="/dns-enumeration/:uuid" element={authContext.loggedIn ? <DNSEnumeration /> : <AuthPage /> } />
+
         <Route path="/scanning/:uuid" element={authContext.loggedIn ? <Scanning /> : <AuthPage /> } />
         <Route path="/exploitation/:uuid" element={authContext.loggedIn ? <Exploitation /> : <AuthPage /> } />
         <Route path="/post-exploitation/:uuid" element={authContext.loggedIn ? <PostExploitation /> : <AuthPage /> } />
