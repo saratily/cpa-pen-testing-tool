@@ -19,13 +19,13 @@ const Penetration = (props) => {
   const navigate = useNavigate();
 
   const runScanHandler = () => {
-    navigate('/planning');
+    navigate('/planning/' + props.penetration.uuid);
   };
 
 
   async function deleteHandler() {
     try {
-      const response = await fetch('api/penetrations/' + props.penetration.ID,
+      const response = await fetch('api/penetrations/' + props.penetration.uuid,
         {
           method: 'DELETE',
           headers: {
@@ -45,7 +45,7 @@ const Penetration = (props) => {
           setErrors(data['error']);
         }
       } else {
-        props.onDeletePenetration(props.penetration.ID);
+        props.onDeletePenetration(props.penetration.uuid);
       }
     } catch (error) {
       setErrors({ "error": error.message });

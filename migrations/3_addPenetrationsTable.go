@@ -11,6 +11,7 @@ func init() {
 		fmt.Println("creating table penetrations...")
 		_, err := db.Exec(`CREATE TABLE penetrations(
 			id SERIAL PRIMARY KEY,
+			unique_id VARCHAR(36) NOT NULL,
 			title TEXT NOT NULL,
 			website TEXT NOT NULL,
 			created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),

@@ -4,7 +4,7 @@ import './App.css';
 import { useContext } from 'react';
 import AuthContext from './store/auth-context';
 
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Layout from './components/Layout/Layout';
 import HomePage from './pages/HomePage';
@@ -34,7 +34,7 @@ function App() {
         <Route path="/penetrations" element=
           {authContext.loggedIn ? <PenetrationsPage /> : <AuthPage /> } />
 
-        <Route path="/planning" element={<Planning />} /> 
+        <Route path="/planning/:uuid" element={authContext.loggedIn ? <Planning /> : <AuthPage /> } />
         <Route path="/scanning" element={<Scanning />} /> 
 
 

@@ -1,24 +1,39 @@
 package store
 
 import (
+	"context"
 	"time"
 
+	"github.com/go-pg/pg/v10"
 	"github.com/go-pg/pg/v10/orm"
 	"github.com/rs/zerolog/log"
+	uuid "github.com/satori/go.uuid"
 )
 
 type Penetration struct {
 	ID         int
-	Title      string `binding:"required,min=3,max=50"`
-	Website    string `binding:"required,min=5,max=5000"`
+	Unique_ID  uuid.UUID `json:"uuid"`
+	Title      string    `binding:"required,min=3,max=50"`
+	Website    string    `binding:"required,min=5,max=5000"`
 	CreatedAt  time.Time
 	ModifiedAt time.Time
 	DeletedAt  time.Time
-	UserID     int `json:"-"`
+	UserID     int     `json:"-"`
+	Tools      []*Tool `json:"-" pg:"fk:user_id,rel:has-many,on_delete:CASCADE"`
+}
+
+var _ pg.AfterSelectHook = (*User)(nil)
+
+func (penetration *Penetration) AfterSelect(ctx context.Context) error {
+	if penetration.Tools == nil {
+		penetration.Tools = []*Tool{}
+	}
+	return nil
 }
 
 func AddPenetration(user *User, penetration *Penetration) error {
 	penetration.UserID = user.ID
+	penetration.Unique_ID = uuid.NewV4()
 	_, err := db.Model(penetration).Returning("*").Insert()
 	if err != nil {
 		log.Error().Err(err).Msg("Error inserting new penetration")

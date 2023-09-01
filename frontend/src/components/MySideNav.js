@@ -1,15 +1,17 @@
 import SideNav, {Toggle, NavItem, NavIcon, NavText} from '@trendmicro/react-sidenav';
 
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function MySideNav() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const uuid = obj => obj.uuid === location.pathname.split("/")[2];
     return (
         <SideNav className='mysidenav'
             onSelect={(selected) => {
                 console.log(selected);
-                navigate('/'+selected);
+                navigate('/'+selected+'/'+uuid);
             }}
             >
             <SideNav.Toggle />
