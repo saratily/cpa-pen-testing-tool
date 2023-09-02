@@ -4,7 +4,6 @@
   padding: 0;
   margin: 0;
 }
-
 .App {
   width: 100vw;
   height: 100vh;
@@ -70,4 +69,13 @@ ul.nav li.active {
 .SecondTab p {
   font-size: 2rem;
   text-align: center;
+}
+
+.command {
+  color: #053742;
+}
+
+
+.output {
+  color: #053742;
 }

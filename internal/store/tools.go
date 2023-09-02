@@ -5,19 +5,24 @@ import (
 
 	"github.com/go-pg/pg/v10/orm"
 	"github.com/rs/zerolog/log"
+	uuid "github.com/satori/go.uuid"
 )
 
 type Tool struct {
 	ID         int
-	Title      string `binding:"required,min=3,max=50"`
-	Content    string `binding:"required,min=5,max=5000"`
+	Unique_ID  uuid.UUID `json:"uuid"`
+	Type       string    `binding:"required,min=3,max=50"`
+	Category   string    `binding:"required,min=3,max=50"`
+	Options    string
+	Output     string
+	Selected   bool
 	CreatedAt  time.Time
 	ModifiedAt time.Time
-	UserID     int `json:"-"`
+	PenID      int `json:"-"`
 }
 
-func AddTool(user *User, tool *Tool) error {
-	tool.UserID = user.ID
+func AddTool(pen *Penetration, tool *Tool) error {
+	tool.PenID = pen.ID
 	_, err := db.Model(tool).Returning("*").Insert()
 	if err != nil {
 		log.Error().Err(err).Msg("Error inserting new tool")
@@ -25,8 +30,8 @@ func AddTool(user *User, tool *Tool) error {
 	return dbError(err)
 }
 
-func FetchUserTools(user *User) error {
-	err := db.Model(user).
+func FetchUserTools(pen *Penetration) error {
+	err := db.Model(pen).
 		WherePK().
 		Relation("Tools", func(q *orm.Query) (*orm.Query, error) {
 			return q.Order("id ASC"), nil
