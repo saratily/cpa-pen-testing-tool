@@ -17,6 +17,7 @@ func init() {
 			options TEXT,
 			command TEXT,
 			output TEXT,
+			can_change BOOLEAN NOT NULL DEFAULT 't',
 			selected BOOLEAN NOT NULL DEFAULT 't',
 			created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 			modified_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
