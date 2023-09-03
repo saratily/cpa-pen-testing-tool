@@ -2,9 +2,9 @@ import { useContext, useCallback } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import AuthContext from "../store/auth-context";
-import Planning from '../components/Planning/Planning';
+import Shodan from '../components/Shodan/Shodan';
 
-const PlanningPage = () => {
+const ShodanPage = () => {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,7 +29,7 @@ const PlanningPage = () => {
     } catch (error) {}
   });
   fetchHandler();
-  return <Planning/>;
+  return <Shodan/>;
 };
 
-export default PlanningPage;
+export default ShodanPage;

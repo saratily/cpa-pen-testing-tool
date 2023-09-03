@@ -19,7 +19,7 @@ const Penetration = (props) => {
   const navigate = useNavigate();
 
   const runScanHandler = () => {
-    navigate('/planning/' + props.penetration.uuid);
+    navigate('/initial-exploration/' + props.penetration.uuid);
   };
 
 

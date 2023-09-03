@@ -17,32 +17,40 @@ function MySideNav() {
             >
             <SideNav.Toggle />
             <SideNav.Nav defaultSelected="planning">
-                <NavItem eventKey="planning">
-                    <NavIcon>
-                        <i className='fa-solid fa-newspaper' style={{ fontSize: "1.5em" }} />
-                    </NavIcon>
-                    <NavText>0. Planninng</NavText>
-                </NavItem>
+
                 <NavItem eventKey="recommaissance">
                     <NavIcon>
                         <i className='fa-solid fa-binoculars' style={{ fontSize: "1.5em" }} />
                     </NavIcon>
-                    <NavText>1. Reconnaissance</NavText>
+                    <NavText>Planning & Reconnaissance</NavText>
+                    <NavItem eventKey="initial-exploration">
+                        <NavText>Initial Exploration</NavText>
+                    </NavItem>
+                    <NavItem eventKey="dns-enumeration">
+                        <NavText>DNS Enumeration</NavText>
+                    </NavItem>
+
+                    <NavItem eventKey="shodan">
+                        <NavText>Shodan</NavText>
+                    </NavItem>
+
+                    <NavItem eventKey="recon-ng">
+                        <NavText>Recon-ng</NavText>
+                    </NavItem>
+
+                </NavItem>
+                <NavItem eventKey="scanning">
+                    <NavIcon>
+                        <i className='fa-solid fa-magnifying-glass' style={{ fontSize: "1.5em" }} />
+                    </NavIcon>
+                    <NavText>Scanninng & Enumeration</NavText>
                     <NavItem eventKey="network-scanning">
                         <NavText>Network Scanninng</NavText>
                     </NavItem>
                     <NavItem eventKey="web-app-enumeration">
                         <NavText>Web App Enumeration</NavText>
                     </NavItem>
-                    <NavItem eventKey="dns-enumeration">
-                        <NavText>DNS Enumeration</NavText>
-                    </NavItem>
-                </NavItem>
-                <NavItem eventKey="scanning">
-                    <NavIcon>
-                        <i className='fa-solid fa-magnifying-glass' style={{ fontSize: "1.5em" }} />
-                    </NavIcon>
-                    <NavText>2. Scanninng</NavText>
+
                 </NavItem>
                 <NavItem eventKey="exploitation">
                     <NavIcon>

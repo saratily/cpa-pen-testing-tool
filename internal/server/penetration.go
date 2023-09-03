@@ -2,16 +2,16 @@ package server
 
 import (
 	"cpa-pen-testing-tool/internal/store"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/niemeyer/pretty"
+	uuid "github.com/satori/go.uuid"
 )
 
 func createPenetration(ctx *gin.Context) {
-	pretty.Print("inside create")
 	penetration := ctx.MustGet(gin.BindKey).(*store.Penetration)
 	user, err := currentUser(ctx)
 	if err != nil {
@@ -22,6 +22,26 @@ func createPenetration(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	default_tools, _ := store.FetchDefaultTool()
+
+	fmt.Println(penetration)
+	for _, default_tool := range default_tools {
+		tool := &store.Tool{
+			Unique_ID:     uuid.NewV4(),
+			Type:          default_tool.Type,
+			Category:      default_tool.Category,
+			Options:       default_tool.Options,
+			Command:       default_tool.Format,
+			Output:        "",
+			CanChange:     default_tool.CanChange,
+			Selected:      default_tool.Selected,
+			PenetrationID: penetration.ID,
+		}
+		fmt.Println(tool)
+		store.AddTool(penetration, tool)
+	}
+
 	ctx.JSON(http.StatusOK, gin.H{
 		"msg":  "Penetration created successfully.",
 		"data": penetration,

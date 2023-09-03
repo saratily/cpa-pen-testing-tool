@@ -9,20 +9,23 @@ import (
 )
 
 type Tool struct {
-	ID         int
-	Unique_ID  uuid.UUID `json:"uuid"`
-	Type       string    `binding:"required,min=3,max=50"`
-	Category   string    `binding:"required,min=3,max=50"`
-	Options    string
-	Output     string
-	Selected   bool
-	CreatedAt  time.Time
-	ModifiedAt time.Time
-	PenID      int `json:"-"`
+	ID            int
+	Unique_ID     uuid.UUID `json:"uuid"`
+	Type          string    `binding:"required,min=3,max=50"`
+	Category      string    `binding:"required,min=3,max=50"`
+	Options       string
+	Command       string
+	Output        string
+	CanChange     bool
+	Selected      bool
+	CreatedAt     time.Time
+	ModifiedAt    time.Time
+	PenetrationID int `json:"-"`
 }
 
 func AddTool(pen *Penetration, tool *Tool) error {
-	tool.PenID = pen.ID
+	tool.PenetrationID = pen.ID
+	tool.Unique_ID = uuid.NewV4()
 	_, err := db.Model(tool).Returning("*").Insert()
 	if err != nil {
 		log.Error().Err(err).Msg("Error inserting new tool")

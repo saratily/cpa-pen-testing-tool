@@ -15,12 +15,12 @@ func init() {
 			category TEXT NOT NULL,
 			options TEXT,
 			format TEXT,
+			active BOOLEAN NOT NULL DEFAULT 't',
 			can_change BOOLEAN NOT NULL DEFAULT 't',
 			selected BOOLEAN NOT NULL DEFAULT 't',
 			created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 			modified_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-			deleted_at TIMESTAMPTZ DEFAULT NULL,
-			user_id INT REFERENCES users ON DELETE CASCADE
+			deleted_at TIMESTAMPTZ DEFAULT NULL
 		)`)
 		return err
 	}, func(db migrations.DB) error {
