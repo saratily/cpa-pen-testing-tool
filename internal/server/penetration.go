@@ -1,10 +1,11 @@
 package server
 
 import (
+	"bytes"
 	"cpa-pen-testing-tool/internal/store"
 	"fmt"
+	"html/template"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -23,22 +24,43 @@ func createPenetration(ctx *gin.Context) {
 		return
 	}
 
+	data := map[string]interface{}{
+		"domain":     penetration.Website,
+		"URL":        "http://www." + penetration.Website,
+		"ip_address": "",
+		"Roles":      []string{"dbteam", "uiteam", "tester"},
+	}
+
 	default_tools, _ := store.FetchDefaultTool()
 
 	fmt.Println(penetration)
-	for _, default_tool := range default_tools {
+	for i, default_tool := range default_tools {
+
+		options := template.Must(template.New("options").Parse(default_tool.Options))
+		optionsBuf := &bytes.Buffer{}
+		if err := options.Execute(optionsBuf, data); err != nil {
+			panic(err)
+		}
+
+		command := template.Must(template.New("command").Parse(default_tool.Format))
+		commandBuf := &bytes.Buffer{}
+		if err := command.Execute(commandBuf, data); err != nil {
+			panic(err)
+		}
+
 		tool := &store.Tool{
 			Unique_ID:     uuid.NewV4(),
-			Type:          default_tool.Type,
-			Category:      default_tool.Category,
-			Options:       default_tool.Options,
-			Command:       default_tool.Format,
+			Type:          default_tools[i].Type,
+			Category:      default_tools[i].Category,
+			Options:       fmt.Sprintf("%s", optionsBuf.String()),
+			Command:       fmt.Sprintf("%s", commandBuf.String()),
 			Output:        "",
-			CanChange:     default_tool.CanChange,
-			Selected:      default_tool.Selected,
+			CanChange:     default_tools[i].CanChange,
+			Selected:      default_tools[i].Selected,
 			PenetrationID: penetration.ID,
+			CreatedAt:     time.Now(),
+			ModifiedAt:    time.Now(),
 		}
-		fmt.Println(tool)
 		store.AddTool(penetration, tool)
 	}
 
@@ -65,45 +87,45 @@ func indexPenetrations(ctx *gin.Context) {
 }
 
 func updatePenetration(ctx *gin.Context) {
-	jsonPenetration := ctx.MustGet(gin.BindKey).(*store.Penetration)
-	user, err := currentUser(ctx)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": InternalServerError})
-		return
-	}
-	dbPenetration, err := store.FetchPenetration(jsonPenetration.ID)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	if user.ID != dbPenetration.UserID {
-		ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Not authorized."})
-		return
-	}
-	jsonPenetration.ModifiedAt = time.Now()
-	if err := store.UpdatePenetration(jsonPenetration); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": InternalServerError})
-		return
-	}
-	ctx.JSON(http.StatusOK, gin.H{
-		"msg":  "Penetration updated successfully.",
-		"data": jsonPenetration,
-	})
+	// jsonPenetration := ctx.MustGet(gin.BindKey).(*store.Penetration)
+	// user, err := currentUser(ctx)
+	// if err != nil {
+	// 	ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": InternalServerError})
+	// 	return
+	// }
+	// dbPenetration, err := store.FetchPenetration(jsonPenetration.ID)
+	// if err != nil {
+	// 	ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// 	return
+	// }
+	// if user.ID != dbPenetration.UserID {
+	// 	ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Not authorized."})
+	// 	return
+	// }
+	// jsonPenetration.ModifiedAt = time.Now()
+	// if err := store.UpdatePenetration(jsonPenetration); err != nil {
+	// 	ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": InternalServerError})
+	// 	return
+	// }
+	// ctx.JSON(http.StatusOK, gin.H{
+	// 	"msg":  "Penetration updated successfully.",
+	// 	"data": jsonPenetration,
+	// })
 }
 
 func deletePenetration(ctx *gin.Context) {
 	paramID := ctx.Param("id")
-	id, err := strconv.Atoi(paramID)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Not valid ID."})
-		return
-	}
+	// id, err := strconv.Atoi(paramID)
+	// if err != nil {
+	// 	ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Not valid ID."})
+	// 	return
+	// }
 	user, err := currentUser(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": InternalServerError})
 		return
 	}
-	penetration, err := store.FetchPenetration(id)
+	penetration, err := store.FetchPenetration(paramID)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

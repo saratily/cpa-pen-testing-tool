@@ -29,7 +29,7 @@ const InitialExplorationPage = () => {
     } catch (error) {}
   });
   fetchHandler();
-  return <InitialExploration/>;
+  return <InitialExploration />;
 };
 
 export default InitialExplorationPage;

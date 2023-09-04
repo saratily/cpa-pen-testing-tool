@@ -1,9 +1,9 @@
 package store
 
 import (
+	"fmt"
 	"time"
 
-	"github.com/go-pg/pg/v10/orm"
 	"github.com/rs/zerolog/log"
 	uuid "github.com/satori/go.uuid"
 )
@@ -16,8 +16,8 @@ type Tool struct {
 	Options       string
 	Command       string
 	Output        string
-	CanChange     bool
-	Selected      bool
+	CanChange     int
+	Selected      int
 	CreatedAt     time.Time
 	ModifiedAt    time.Time
 	PenetrationID int `json:"-"`
@@ -26,6 +26,7 @@ type Tool struct {
 func AddTool(pen *Penetration, tool *Tool) error {
 	tool.PenetrationID = pen.ID
 	tool.Unique_ID = uuid.NewV4()
+	fmt.Println(tool)
 	_, err := db.Model(tool).Returning("*").Insert()
 	if err != nil {
 		log.Error().Err(err).Msg("Error inserting new tool")
@@ -33,19 +34,46 @@ func AddTool(pen *Penetration, tool *Tool) error {
 	return dbError(err)
 }
 
-func FetchUserTools(pen *Penetration) error {
-	err := db.Model(pen).
-		WherePK().
-		Relation("Tools", func(q *orm.Query) (*orm.Query, error) {
-			return q.Order("id ASC"), nil
-		}).
+func FetchPenTools(pen *Penetration, toolType string) ([]Tool, error) {
+
+	var tools []Tool
+
+	err := db.Model(&tools).
+		Where("penetration_id = ?", pen.ID).
+		Where("type = ?", toolType).
 		Select()
+
 	if err != nil {
-		log.Error().Err(err).Msg("Error fetching user's tools")
+		log.Error().Err(err).Msg("Error fetching tool")
+		return nil, dbError(err)
+	}
+	return tools, nil
+}
+
+func FetchAllTools(pen *Penetration) ([]Tool, error) {
+
+	var tools []Tool
+
+	err := db.Model(&tools).
+		Where("penetration_id = ?", pen.ID).
+		Select()
+
+	if err != nil {
+		log.Error().Err(err).Msg("Error fetching tool")
+		return nil, dbError(err)
+	}
+	return tools, nil
+}
+
+func UpdateTool(tool *Tool) error {
+	_, err := db.Model(tool).WherePK().UpdateNotZero()
+	if err != nil {
+		log.Error().Err(err).Msg("Error updating tool")
 	}
 	return dbError(err)
 }
 
+/*
 func FetchTool(id int) (*Tool, error) {
 	tool := new(Tool)
 	tool.ID = id
@@ -57,13 +85,6 @@ func FetchTool(id int) (*Tool, error) {
 	return tool, nil
 }
 
-func UpdateTool(tool *Tool) error {
-	_, err := db.Model(tool).WherePK().UpdateNotZero()
-	if err != nil {
-		log.Error().Err(err).Msg("Error updating tool")
-	}
-	return dbError(err)
-}
 
 func DeleteTool(tool *Tool) error {
 	_, err := db.Model(tool).WherePK().Delete()
@@ -72,3 +93,4 @@ func DeleteTool(tool *Tool) error {
 	}
 	return dbError(err)
 }
+*/

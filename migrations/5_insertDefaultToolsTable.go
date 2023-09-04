@@ -10,28 +10,29 @@ func init() {
 	migrations.MustRegisterTx(func(db migrations.DB) error {
 		fmt.Println("creating table default_tools...")
 		_, err := db.Exec(`INSERT INTO default_tools(type, category, options, format, active, can_change, selected)
-				VALUES('ping', 'reconnaissance', '', 'ping {url}', 't', 'f', 't'),
-				('whois', 'reconnaissance', '', 'whois {url}', 't', 'f', 't'),		
-				('dig', 'dns_enumeration', '+short', 'dig {url} +short', 't', 'f', 't'),
-				('dig', 'dns_enumeration', '+short A', 'dig {url} +short A', 't', 't', 't'),
-				('dig', 'dns_enumeration', '+short AAAA', 'dig {url} +short AAAA', 't', 't', 't'),
-				('dig', 'dns_enumeration', 'MX', 'dig {url} MX', 't', 't', 't'),
-				('dig', 'dns_enumeration', 'TXT', 'dig {url} TXT', 't', 't', 't'),
-				('dig', 'dns_enumeration', 'ANY', 'dig {url} ANY', 't', 't', 't'),
-				('dig', 'dns_enumeration', 'SOA', 'dig {url} SOA', 't', 't', 't'),
-				('nslookup', 'dns_enumeration', ' | awk "/^Address: / { print $2 }"', 'nslookup {url} | awk "/^Address: / { print $2 }"', 't', 'f', 't'),
-				('nslookup', 'dns_enumeration', '-type=A', 'nslookup -type=A {url}', 't', 't', 't'),
-				('nslookup', 'dns_enumeration', '-type=cname', 'nslookup -type=cname {url}', 't', 't', 't'),
-				('nslookup', 'dns_enumeration', '-type=SOA', 'nslookup -type=SOA {url}', 't', 't', 't'),
-				('nslookup', 'dns_enumeration', '-type=NX', 'nslookup -type=NX {url}', 't', 't', 't'),
-				('nslookup', 'dns_enumeration', '-type=MS', 'nslookup -type=MS {url}', 't', 't', 't'),
-				('nslookup', 'dns_enumeration', '-type=TXT', 'nslookup -type=TXT {url}', 't', 't', 't'),
-				('shodan', 'reconnaissance', '+short', 'shodan host {ip_address}', 't', 'f', 't'),
-				('ffuf', 'web_enumeration', '', 'ffuf -u {url} -w /usr/share/wordlists/dirb/common.txt -p 1 fc 301', 't', 'f', 't'),
-				('dirb', 'web_enumeration', '-w /usr/share/wordlists/dirb/common.txt', 'dirb {url} -w /usr/share/wordlists/dirb/common.txt', 't', 'f', 't'),
-				('wfuzz', 'web_enumeration', '', 'wfuzz -c -w /usr/share/wordlists/dirb/common.txt {url}/FUZZ', 't', 'f', 't'),
-				('Wappalyzer', 'web_enumeration', '', 'python wappy.py -u {url}', 't', 'f', 't'),
-				('nmap', 'network_scanning', '', 'nmap -sV {ip_address}', 't', 't', 't')
+				VALUES('reachable', 'reconnaissance', '{{.URL}}', 'GET {{.URL}}', 1, 0, 0),
+				('whois', 'reconnaissance', '{{.domain}}', 'whois {{.domain}}', 1, 0, 0),
+				('ping', 'reconnaissance', '{{.URL}}', 'ping {{.URL}}', 1, 0, 0),
+				('digIPv4', 'dns_enumeration', '{{.domain}}', 'dig {{.domain}} +short A', 1, 0, 0),
+				('digIPv6', 'dns_enumeration', '{{.domain}}', 'dig {{.domain}} +short AAAA', 1, 0, 0),
+				('digCNAME', 'dns_enumeration', '{{.domain}}', 'dig {{.domain}} cname', 1, 0, 0),
+				('digMX', 'dns_enumeration', '{{.domain}}', 'dig {{.domain}} MX', 1, 0, 0),
+				('digNS', 'dns_enumeration', '{{.domain}}', 'dig {{.domain}} NS', 1, 0, 0),
+				('digTXT', 'dns_enumeration', '{{.domain}}', 'dig {{.domain}} TXT', 1, 0, 0),
+				('digANY', 'dns_enumeration', '{{.domain}}', 'dig {{.domain}} ANY', 1, 0, 0),
+				('digSOA', 'dns_enumeration', '{{.domain}}', 'dig {{.domain}} SOA', 1, 0, 0),
+				('LookupIP', 'dns_enumeration', '{{.domain}}', 'nslookup {{.URL}} | awk "/^Address: / { print $2 }"', 1, 0, 0),
+				('LookupCNAME', 'dns_enumeration', '{{.domain}}', 'nslookup -type=cname {{.domain}}', 1, 0, 0),
+				('LookupMX', 'dns_enumeration', '{{.domain}}', 'nslookup -type=MX {{.domain}}', 1, 0, 0),
+				('LookupNS', 'dns_enumeration', '{{.domain}}', 'nslookup -type=NS {{.domain}}', 1, 0, 0),
+				('LookupSRV', 'dns_enumeration', '{{.domain}}', 'nslookup -type=SRV {{.domain}}', 1, 0, 0),
+				('LookupTXT', 'dns_enumeration', '{{.domain}}', 'nslookup -type=TXT {{.domain}}', 1, 0, 0),
+				('shodan', 'reconnaissance', '{{.ip_address}}', 'shodan host {{.ip_address}}', 1, 0, 0),
+				('ffuf', 'web_enumeration', '', 'ffuf -u {{.URL}} -w /usr/share/wordlists/dirb/common.txt -p 1 fc 301', 1, 0, 0),
+				('dirb', 'web_enumeration', '-w /usr/share/wordlists/dirb/common.txt', 'dirb {{.URL}} -w /usr/share/wordlists/dirb/common.txt', 1, 0, 0),
+				('wfuzz', 'web_enumeration', '', 'wfuzz -c -w /usr/share/wordlists/dirb/common.txt {{.URL}}/FUZZ', 1, 0, 0),
+				('Wappalyzer', 'web_enumeration', '', 'python wappy.py -u {{.URL}}', 1, 0, 0),
+				('nmap', 'network_scanning', '', 'nmap -sV {{.URL}}', 1, 1, 0)
 		`)
 		return err
 	}, func(db migrations.DB) error {
@@ -53,7 +54,7 @@ func init() {
 // 	migrations.MustRegisterTx(func(db migrations.DB) error {
 // 		fmt.Println("creating table default_tools...")
 // 		_, err := db.Exec(`INSERT INTO TABLE default_tools('type', 'category', 'options', 'format', 'selected')
-// 		VALUES('dig', 'dns_enumeration', '+short', 'dig {url} +short', 't')
+// 		VALUES('dig', 'dns_enumeration', '+short', 'dig {{.URL}} +short', 1)
 // 		)`)
 // 		return err
 // 	}, func(db migrations.DB) error {

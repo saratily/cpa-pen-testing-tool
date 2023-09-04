@@ -15,9 +15,9 @@ func init() {
 			category TEXT NOT NULL,
 			options TEXT,
 			format TEXT,
-			active BOOLEAN NOT NULL DEFAULT 't',
-			can_change BOOLEAN NOT NULL DEFAULT 't',
-			selected BOOLEAN NOT NULL DEFAULT 't',
+			active SMALLINT NOT NULL DEFAULT 1,
+			can_change SMALLINT NOT NULL DEFAULT 1,
+			selected SMALLINT NOT NULL DEFAULT 1,
 			created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 			modified_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 			deleted_at TIMESTAMPTZ DEFAULT NULL

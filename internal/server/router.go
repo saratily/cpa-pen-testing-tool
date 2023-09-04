@@ -42,6 +42,10 @@ func setRouter(cfg conf.Config) *gin.Engine {
 		authorized.POST("/penetrations", gin.Bind(store.Penetration{}), createPenetration)
 		authorized.PUT("/penetrations", gin.Bind(store.Penetration{}), updatePenetration)
 		authorized.DELETE("/penetrations/:id", deletePenetration)
+
+		authorized.GET("/tools", indexTools)
+		authorized.GET("/tools/:id/:type", indexTools)
+		authorized.GET("/execute/:id/:type", executeTool)
 	}
 
 	router.NoRoute(func(ctx *gin.Context) { ctx.JSON(http.StatusNotFound, gin.H{}) })

@@ -17,8 +17,8 @@ func init() {
 			options TEXT,
 			command TEXT,
 			output TEXT,
-			can_change BOOLEAN NOT NULL DEFAULT 't',
-			selected BOOLEAN NOT NULL DEFAULT 't',
+			can_change SMALLINT NOT NULL DEFAULT 0,
+			selected SMALLINT NOT NULL DEFAULT 0,
 			created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 			modified_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 			penetration_id INT REFERENCES penetrations ON DELETE CASCADE

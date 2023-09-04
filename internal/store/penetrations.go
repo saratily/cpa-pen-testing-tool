@@ -54,10 +54,13 @@ func FetchUserPenetrations(user *User) error {
 	return dbError(err)
 }
 
-func FetchPenetration(id int) (*Penetration, error) {
+func FetchPenetration(id string) (*Penetration, error) {
 	penetration := new(Penetration)
-	penetration.ID = id
-	err := db.Model(penetration).WherePK().Select()
+	penetration.Unique_ID = uuid.Must(uuid.FromString(id))
+	err := db.Model(penetration).
+		Where("unique_id = ?", penetration.Unique_ID).
+		Select()
+
 	if err != nil {
 		log.Error().Err(err).Msg("Error fetching penetration")
 		return nil, dbError(err)
