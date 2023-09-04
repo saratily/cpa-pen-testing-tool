@@ -46,6 +46,7 @@ func setRouter(cfg conf.Config) *gin.Engine {
 		authorized.GET("/tools", indexTools)
 		authorized.GET("/tools/:id/:type", indexTools)
 		authorized.GET("/execute/:id/:type", executeTool)
+		authorized.GET("/toggle/:id/:type", toggleTool)
 	}
 
 	router.NoRoute(func(ctx *gin.Context) { ctx.JSON(http.StatusNotFound, gin.H{}) })

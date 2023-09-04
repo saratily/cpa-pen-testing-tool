@@ -227,6 +227,49 @@ func executeTool(ctx *gin.Context) {
 	})
 }
 
+func toggleTool(ctx *gin.Context) {
+	paramID := ctx.Param("id")
+	paramType := ctx.Param("type")
+
+	user, err := currentUser(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": InternalServerError})
+		return
+	}
+	penetration, err := store.FetchPenetration(paramID)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if user.ID != penetration.UserID {
+		ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Not authorized."})
+		return
+	}
+
+	tools, err := store.FetchPenTools(penetration, paramType)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	for i, tool := range tools {
+		if tool.Selected == 1 {
+			tools[i].Selected = 2
+		} else {
+			tools[i].Selected = 1
+		}
+		if err := store.UpdateTool(&tools[i]); err != nil {
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": InternalServerError})
+			return
+		}
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg":  "Tools fetched successfully.",
+		"data": tools,
+	})
+}
+
 /*
 // func createTool(ctx *gin.Context) {
 // 	tool := ctx.MustGet(gin.BindKey).(*store.Tool)
