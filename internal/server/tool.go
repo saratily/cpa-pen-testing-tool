@@ -179,6 +179,13 @@ func executeTool(ctx *gin.Context) {
 			}
 			tools[i].Output = fmt.Sprintf("%s", string(out))
 
+		case "shodan":
+			out, err := exec.Command("shodan", "stats", tool.Options).Output()
+			if err != nil {
+				tools[i].Output = err.Error()
+			}
+			tools[i].Output = fmt.Sprintf("%s", string(out))
+
 		case "nmap":
 			out, err := exec.Command("nmap", "-sT", "google.com").Output()
 			if err != nil {
