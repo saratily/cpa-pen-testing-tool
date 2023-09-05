@@ -54,12 +54,11 @@ func createPenetration(ctx *gin.Context) {
 			Category:      default_tools[i].Category,
 			Options:       fmt.Sprintf("%s", optionsBuf.String()),
 			Command:       fmt.Sprintf("%s", commandBuf.String()),
-			Output:        "",
+			Output:        default_tool.Help,
 			CanChange:     default_tools[i].CanChange,
 			Selected:      default_tools[i].Selected,
 			PenetrationID: penetration.ID,
 			CreatedAt:     time.Now(),
-			ModifiedAt:    time.Now(),
 		}
 		store.AddTool(penetration, tool)
 	}

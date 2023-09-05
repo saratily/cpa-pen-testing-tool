@@ -13,6 +13,7 @@ type DefaultTool struct {
 	Category   string `binding:"required,min=3,max=50"`
 	Options    string
 	Format     string
+	Help       string
 	Active     int
 	CanChange  int
 	Selected   int

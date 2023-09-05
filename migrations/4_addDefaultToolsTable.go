@@ -15,6 +15,7 @@ func init() {
 			category TEXT NOT NULL,
 			options TEXT,
 			format TEXT,
+			help TEXT,
 			active SMALLINT NOT NULL DEFAULT 1,
 			can_change SMALLINT NOT NULL DEFAULT 1,
 			selected SMALLINT NOT NULL DEFAULT 1,

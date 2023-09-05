@@ -34,10 +34,6 @@ function MySideNav() {
                         <NavText>Shodan</NavText>
                     </NavItem>
 
-                    <NavItem eventKey="recon-ng">
-                        <NavText>Recon-ng</NavText>
-                    </NavItem>
-
                 </NavItem>
                 <NavItem eventKey="scanning">
                     <NavIcon>
@@ -50,7 +46,6 @@ function MySideNav() {
                     <NavItem eventKey="web-app-enumeration">
                         <NavText>Web App Enumeration</NavText>
                     </NavItem>
-
                 </NavItem>
                 <NavItem eventKey="exploitation">
                     <NavIcon>

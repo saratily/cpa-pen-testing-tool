@@ -20,7 +20,7 @@ func init() {
 			can_change SMALLINT NOT NULL DEFAULT 0,
 			selected SMALLINT NOT NULL DEFAULT 0,
 			created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-			modified_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+			modified_at TIMESTAMPTZ,
 			penetration_id INT REFERENCES penetrations ON DELETE CASCADE
 		)`)
 		return err

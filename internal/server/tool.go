@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	nmap "github.com/lair-framework/go-nmap"
 	"github.com/likexian/whois"
 )
 
@@ -181,22 +180,60 @@ func executeTool(ctx *gin.Context) {
 			tools[i].Output = fmt.Sprintf("%s", string(out))
 
 		case "nmap":
-			content, err := exec.Command("nmap", "-sT", "google.com").Output()
-			if err != nil {
-				tools[i].Output = err.Error()
-			}
-
-			out, _ := nmap.Parse(content)
-			fmt.Println(out)
-
-			// tools[i].Output = fmt.Sprintf("%s", string(out))
-
-		default:
-			out, err := exec.Command(tool.Options).Output()
+			out, err := exec.Command("nmap", "-sT", "google.com").Output()
 			if err != nil {
 				tools[i].Output = err.Error()
 			}
 			tools[i].Output = fmt.Sprintf("%s", string(out))
+
+		case "nikto":
+			out, err := exec.Command("nikto", "-h", tool.Options).Output()
+			if err != nil {
+				tools[i].Output = err.Error()
+			}
+			tools[i].Output = fmt.Sprintf("%s", string(out))
+
+		case "ffuf":
+			/*ffuf -u https://FUZZ.yahoo.com -w /usr/share/wordlists/dirb/common.txt -p 1 fc 301
+			ffuf -u https://api.yahoo.com/FUZZ -w /usr/share/wordlists/dirb/common.txt -p 1
+			*/
+			out, err := exec.Command("ffuf", "-u", "http://"+tool.Options+"/FUZZ", "-w", "/usr/share/wordlists/dirb/common.txt", "-p", "1").Output()
+			if err != nil {
+				tools[i].Output = err.Error()
+			}
+			tools[i].Output = fmt.Sprintf("%s", string(out))
+		case "dirb":
+			fmt.Print(tool.Options)
+			//dirb http://example.com -w /usr/share/wordlists/dirb/common.txt
+			out, err := exec.Command("dirb", "http://"+tool.Options, "-w", "/usr/share/wordlists/dirb/common.txt").Output()
+			if err != nil {
+				tools[i].Output = err.Error()
+			}
+			tools[i].Output = fmt.Sprintf("%s", string(out))
+		case "wfuzz":
+			//wfuzz -c -w /usr/share/wordlists/dirb/common.txt https://example.com/FUZZ
+			// wfuzz -c -w /usr/share/wordlists/dirb/common.txt -R 1 https://{FUZZ}.example.com/
+			//usr/share/wordlists/wfuzz/wordlist.txt
+			//wfuzz -w wordlist.txt -f output.txt --hc 404 --follow http://facebook.com/FUZZ
+			// out, err := exec.Command("wfuzz", "-w", "usr/share/wordlists/wfuzz/wordlist.txt", "-hc", "404", "--follow", "http://"+tool.Options+"/FUZZ").Output()
+
+			//wfuzz -z list,GET-HEAD-POST-TRACE-OPTIONS -X FUZZ http://testphp.vulnweb.com/
+
+			out, err := exec.Command("wfuzz", "-z", "list,GET-HEAD-POST-TRACE-OPTIONS", "-X", "FUZZ", "http://"+tool.Options+"/").Output()
+
+			if err != nil {
+				tools[i].Output = err.Error()
+			}
+			tools[i].Output = fmt.Sprintf("%s", string(out))
+		case "wappalyzer":
+
+		default:
+			tools[i].Output = "Unknown tool"
+			// out, err := exec.Command(tool.Options).Output()
+			// if err != nil {
+			// 	tools[i].Output = err.Error()
+			// }
+			// tools[i].Output = fmt.Sprintf("%s", string(out))
 		}
 
 		tools[i].ModifiedAt = time.Now()
