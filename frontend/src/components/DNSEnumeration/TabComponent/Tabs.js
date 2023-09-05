@@ -5,35 +5,35 @@ import Dig from "./Dig";
 import Nslookup from "./Nslookup";
 
 const Tabs = () => {
-    const [activeTab, setActiveTab] = useState("tab1");
+    const [activeTab, setActiveTab] = useState("dig");
     //  Functions to handle Tab Switching
-    const handleTab1 = () => {
-      // update the state to tab1
-      setActiveTab("tab1");
+    const handleDig = () => {
+      // update the state to dig
+      setActiveTab("dig");
     };
-    const handleTab2 = () => {
-      // update the state to tab2
-      setActiveTab("tab2");
+    const handleNslookup = () => {
+      // update the state to nslookup
+      setActiveTab("nslookup");
     };
     return (
       <div className="Tabs">
         <ul className="nav">
           <li
-            className={activeTab === "tab1" ? "active" : ""}
-            onClick={handleTab1}
+            className={activeTab === "dig" ? "active" : ""}
+            onClick={handleDig}
           >
-            Tab 1
+            dig
           </li>
           <li
-            className={activeTab === "tab2" ? "active" : ""}
-            onClick={handleTab2}
+            className={activeTab === "nslookup" ? "active" : ""}
+            onClick={handleNslookup}
           >
-            Tab 2
+            nslookup
           </li>
         </ul>
    
         <div className="outlet">
-          {activeTab === "tab1" ? <Dig /> : <Nslookup />}
+          {activeTab === "dig" ? <Dig /> : <Nslookup />}
         </div>
       </div>
     );

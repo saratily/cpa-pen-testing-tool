@@ -6,7 +6,7 @@ function DNSEnumeration() {
        <div>
          <h1>DNS Enumeration</h1>
          <Tabs/>
-         <footer><a href=''>react-simple-tabs</a></footer>
+         {/* <footer><a href=''>react-simple-tabs</a></footer> */}
        </div>
      );
  }
