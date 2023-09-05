@@ -12,10 +12,6 @@ function NetworkScanning() {
     <Pens 
       uuid={uuid} />
     <Tools
-      type="reachable"
-      uuid={uuid} 
-      title="Check site is accessible"/>
-    <Tools
     type="ping"
     uuid={uuid} 
     title="ping command"/> 

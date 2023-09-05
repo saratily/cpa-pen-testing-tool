@@ -77,7 +77,7 @@ const Tool = (props) => {
   };
 
   const cardTitle = editing ? 'Edit tool' : props.tool.Command;
-  const cardBody = props.tool.Output;
+  const cardBody = props.tool.Output.split('\n').map(str => <p>{str}</p>);
   const cardDate = props.tool.ModifiedAt;
   const cardButtons = props.tool.Selected == 1 ?
     <div className="container">

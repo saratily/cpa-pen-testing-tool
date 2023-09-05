@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"net/http"
 	"os/exec"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-ping/ping"
 	nmap "github.com/lair-framework/go-nmap"
 	"github.com/likexian/whois"
 )
@@ -71,38 +71,21 @@ func executeTool(ctx *gin.Context) {
 
 	for i, tool := range tools {
 		switch tool.Type {
-		case "reachable":
-			response, errors := http.Get(tool.Options)
-
-			if errors != nil {
-				_, netErrors := http.Get("https://www.google.com")
-
-				if netErrors != nil {
-					tools[i].Output = "Error: no internet\n"
-				}
+		case "ping":
+			out, err := exec.Command("ping", tool.Options, "-c 5", "-i 3", "-w 10").Output()
+			if err != nil {
+				tools[i].Output = err.Error()
 			}
-
-			if response.StatusCode == 200 {
-				tools[i].Output = "Site is reachable\n"
+			if strings.Contains(string(out), "Destination Host Unreachable") {
+				tools[i].Output = "Destination Host Unreachable"
 			} else {
-				tools[i].Output = "Error: Site is not reachable\n"
+				tools[i].Output = "Destination Host is reachable"
 			}
-
 		case "whois":
 			tools[i].Output, err = whois.Whois(tool.Options)
 			if err != nil {
 				tools[i].Output = err.Error()
 			}
-		case "ping":
-			pinger, err := ping.NewPinger("www.google.com")
-			if err != nil {
-				panic(err)
-			}
-			pinger.Count = 3
-			pinger.Run()                 // blocks until finished
-			stats := pinger.Statistics() // get send/receive/rtt stats
-			tools[i].Output = fmt.Sprintf("%d packets transmitted, %d received, %f% packet loss, time 4087ms \nrtt min/avg/max/mdev = %s/%s/%s/%s ms", stats.PacketsSent, stats.PacketsRecv, stats.PacketLoss, stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
-
 		case "digIPv4":
 			out, err := exec.Command("dig", tool.Options, "+short", "A").Output()
 			if err != nil {
