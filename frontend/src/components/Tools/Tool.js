@@ -78,6 +78,7 @@ const Tool = (props) => {
 
   const cardTitle = editing ? 'Edit tool' : props.tool.Command;
   const cardBody = props.tool.Output;
+  const cardDate = props.tool.ModifiedAt;
   const cardButtons = props.tool.Selected == 1 ?
     <div className="container">
       <button type="button" className="btn btn-success float-right mx-3" onClick={toggleHandler}>Selected</button>
@@ -94,6 +95,7 @@ const Tool = (props) => {
     <div className="card mb-5 pb-2">
       <div className="card-header">{cardTitle}</div>
       {cardButtons}
+      <div className="card-body">Command executed on: {cardDate}</div>
       <div className="card-body">{cardBody}</div>
 
       {errorWebsite}

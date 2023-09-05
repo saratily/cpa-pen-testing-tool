@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-ping/ping"
 	nmap "github.com/lair-framework/go-nmap"
 	"github.com/likexian/whois"
 )
@@ -92,14 +93,16 @@ func executeTool(ctx *gin.Context) {
 			if err != nil {
 				tools[i].Output = err.Error()
 			}
-		//	case "ping":
-		// pinger, err := ping.NewPinger("www.google.com")
-		// if err != nil {
-		// 	panic(err)
-		// }
-		// pinger.Count = 3
-		// pinger.Run()                 // blocks until finished
-		// stats := pinger.Statistics() // get send/receive/rtt stats
+		case "ping":
+			pinger, err := ping.NewPinger("www.google.com")
+			if err != nil {
+				panic(err)
+			}
+			pinger.Count = 3
+			pinger.Run()                 // blocks until finished
+			stats := pinger.Statistics() // get send/receive/rtt stats
+			tools[i].Output = fmt.Sprintf("%d packets transmitted, %d received, %f% packet loss, time 4087ms \nrtt min/avg/max/mdev = %s/%s/%s/%s ms", stats.PacketsSent, stats.PacketsRecv, stats.PacketLoss, stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
+
 		case "digIPv4":
 			out, err := exec.Command("dig", tool.Options, "+short", "A").Output()
 			if err != nil {

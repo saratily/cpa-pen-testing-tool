@@ -72,7 +72,7 @@ const Tools = (props) => {
 
   return (
     <section>
-      <h1 className="pb-4">My tools</h1>
+      <h3 className="pb-4">{props.title}</h3>
       {errorContent}
       {toolsContent}
     </section>

@@ -70,6 +70,29 @@ func createPenetration(ctx *gin.Context) {
 	})
 }
 
+func getPenetration(ctx *gin.Context) {
+	paramID := ctx.Param("id")
+	user, err := currentUser(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": InternalServerError})
+		return
+	}
+	penetration, err := store.FetchPenetration(paramID)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if user.ID != penetration.UserID {
+		ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Not authorized."})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg":  "Penetrations fetched successfully.",
+		"data": penetration,
+	})
+
+}
+
 func indexPenetrations(ctx *gin.Context) {
 	user, err := currentUser(ctx)
 	if err != nil {

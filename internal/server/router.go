@@ -39,6 +39,7 @@ func setRouter(cfg conf.Config) *gin.Engine {
 		authorized.DELETE("/posts/:id", deletePost)
 
 		authorized.GET("/penetrations", indexPenetrations)
+		authorized.GET("/penetration/:id", getPenetration)
 		authorized.POST("/penetrations", gin.Bind(store.Penetration{}), createPenetration)
 		authorized.PUT("/penetrations", gin.Bind(store.Penetration{}), updatePenetration)
 		authorized.DELETE("/penetrations/:id", deletePenetration)
