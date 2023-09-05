@@ -8,13 +8,11 @@ function  WappalyzerEnumeration() {
     const uuid = location.pathname.split("/")[2];
 
     return <div className='page'>
-      <h1>WappalyzerEnumeration</h1>
     <Pens 
       uuid={uuid} />
     <Tools
-    type="Wappalyzer"
-    uuid={uuid} 
-    title="dig command to fetch IPv4 address" /> 
+    type="wappalyzer"
+    uuid={uuid} /> 
     </div>
     
 }

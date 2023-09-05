@@ -8,13 +8,11 @@ function  WfuzzEnumeration() {
     const uuid = location.pathname.split("/")[2];
 
     return <div className='page'>
-      <h1> WfuzzEnumeration </h1>
     <Pens 
       uuid={uuid} />
     <Tools
     type="wfuzz"
-    uuid={uuid} 
-    title="dig command to fetch IPv4 address" /> 
+    uuid={uuid}  /> 
     </div>
     
 }

@@ -12,8 +12,7 @@ function  FfufEnumeration() {
       uuid={uuid} />
     <Tools
     type="ffuf"
-    uuid={uuid} 
-    title="dig command to fetch IPv4 address" /> 
+    uuid={uuid} /> 
     </div>
     
 }

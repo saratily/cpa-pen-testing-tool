@@ -216,16 +216,22 @@ func executeTool(ctx *gin.Context) {
 			//usr/share/wordlists/wfuzz/wordlist.txt
 			//wfuzz -w wordlist.txt -f output.txt --hc 404 --follow http://facebook.com/FUZZ
 			// out, err := exec.Command("wfuzz", "-w", "usr/share/wordlists/wfuzz/wordlist.txt", "-hc", "404", "--follow", "http://"+tool.Options+"/FUZZ").Output()
-
+			// out, err := exec.Command("wfuzz", "-z", "list,GET-HEAD-POST-TRACE-OPTIONS", "-X", "FUZZ", "http://"+tool.Options+"/").Output()
 			//wfuzz -z list,GET-HEAD-POST-TRACE-OPTIONS -X FUZZ http://testphp.vulnweb.com/
 
-			out, err := exec.Command("wfuzz", "-z", "list,GET-HEAD-POST-TRACE-OPTIONS", "-X", "FUZZ", "http://"+tool.Options+"/").Output()
+			out, err := exec.Command("wfuzz", "-c", "-w", "/usr/share/wordlists/dirb/common.txt", "https://"+tool.Options+"/FUZZ").Output()
 
 			if err != nil {
 				tools[i].Output = err.Error()
 			}
 			tools[i].Output = fmt.Sprintf("%s", string(out))
 		case "wappalyzer":
+			out, err := exec.Command("wappy", "-u", tool.Options).Output()
+
+			if err != nil {
+				tools[i].Output = err.Error()
+			}
+			tools[i].Output = fmt.Sprintf("%s", string(out))
 
 		default:
 			tools[i].Output = "Unknown tool"
